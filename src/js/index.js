@@ -1,13 +1,21 @@
-//import react into the bundle
-import React from "react";
-import ReactDOM from "react-dom/client";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 
-// include your styles into the webpack bundle
-import "../styles/index.css";
+import '../styles/index.css';
 
-//import your own components
-import Home from "./component/home.jsx";
+import SecondsCounter from './component/seconds-counter.jsx';
 
-//render your react application
-ReactDOM.createRoot(document.getElementById('app')).render(<Home/>);
+const domNode = document.getElementById('app');
+const root = createRoot(domNode);
 
+const UPPER_BOUND = 1000000;
+
+let secondsSinceReset = -1;
+let intervalId = -1;
+
+window.addEventListener('load', event => {
+    intervalId = setInterval(() => {
+        secondsSinceReset = (secondsSinceReset + 1) % UPPER_BOUND;
+        root.render(<SecondsCounter displayedSeconds={secondsSinceReset} />);
+    }, 1000);
+});
